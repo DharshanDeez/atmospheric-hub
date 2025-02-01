@@ -7,7 +7,7 @@ import { Sun, Cloud, CloudRain } from "lucide-react";
 interface ForecastCardProps {
   data: ForecastData;
   isLoading?: boolean;
-  units: 'metric' | 'imperial';
+  units: "metric" | "imperial";
 }
 
 export const ForecastCard = ({ data, isLoading, units }: ForecastCardProps) => {
@@ -27,21 +27,21 @@ export const ForecastCard = ({ data, isLoading, units }: ForecastCardProps) => {
 
   const getWeatherIcon = (weatherMain: string) => {
     switch (weatherMain.toLowerCase()) {
-      case 'clear':
-        return <Sun className="w-8 h-8 text-white" />;
-      case 'clouds':
-        return <Cloud className="w-8 h-8 text-white" />;
-      case 'rain':
-        return <CloudRain className="w-8 h-8 text-white" />;
+      case "clear":
+        return <Sun className="w-8 h-8 text-yellow-400" />; // Bright sun
+      case "clouds":
+        return <Cloud className="w-8 h-8 text-white" />; // Grayish clouds
+      case "rain":
+        return <CloudRain className="w-8 h-8 text-gray-500" />; // Blue rain clouds
       default:
-        return <Sun className="w-8 h-8 text-white" />;
+        return <Sun className="w-8 h-8 text-yellow-400" />; // Default to sunny
     }
   };
 
   // Get one forecast per day (at noon)
-  const dailyForecasts = data.list.filter(item => 
-    item.dt_txt.includes("12:00:00")
-  ).slice(0, 6);
+  const dailyForecasts = data.list
+    .filter((item) => item.dt_txt.includes("12:00:00"))
+    .slice(0, 6);
 
   return (
     <Card className="w-full max-w-md p-6 bg-transparent border-none text-white">
@@ -49,7 +49,7 @@ export const ForecastCard = ({ data, isLoading, units }: ForecastCardProps) => {
         {dailyForecasts.map((forecast) => (
           <div key={forecast.dt} className="text-center space-y-2">
             <p className="text-sm font-light">
-              {format(new Date(forecast.dt_txt), 'EEE')}
+              {format(new Date(forecast.dt_txt), "EEE")}
             </p>
             {getWeatherIcon(forecast.weather[0].main)}
             <p className="text-lg font-light">

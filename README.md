@@ -1,69 +1,31 @@
-# Welcome to your Lovable project
+# Weather App 🌤️
 
-## Project info
+A modern weather application built with **Vite**, **React**, and **TypeScript**, featuring **real-time weather updates**, a **5-day forecast**, and a beautiful UI with **glass-morphism design**.
 
-**URL**: https://lovable.dev/projects/342a888c-ee67-4da7-a211-6b8915f5b6a9
+## 🚀 Features
 
-## How can I edit this code?
+- 🌎 **Real-time Weather Data** – Fetches current weather using the OpenWeatherMap API.
+- 🔄 **Automatic Updates** – Uses React Query to update data every **30 seconds**.
+- 📍 **Search Functionality** – Search for any city's weather with error handling.
+- 💾 **Persistence** – Last searched city is stored in **localStorage**.
+- 🎨 **Modern UI/UX** – Dynamic **weather-based gradients**, animations, and a responsive design.
+- 📅 **5-Day Forecast** – View future weather predictions.
+- 🌡️ **Unit Switching** – Supports **Celsius & Fahrenheit**.
 
-There are several ways of editing your application.
+## 🏗️ Project Setup
 
-**Use Lovable**
+# Install dependencies
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/342a888c-ee67-4da7-a211-6b8915f5b6a9) and start prompting.
+- npm install
 
-Changes made via Lovable will be committed automatically to this repo.
+# Set up environment variables
 
-**Use your preferred IDE**
+- VITE_API_KEY=xxxxxxxxxxxxxxxxxxxxxxx
+- VITE_BASE_URL="https://api.openweathermap.org/data/2.5"
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- 🔑 Get your API key: OpenWeatherMap
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# 4️⃣ Start the development server
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/342a888c-ee67-4da7-a211-6b8915f5b6a9) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+- npm run dev
+- The app will be available at http://localhost:8080/

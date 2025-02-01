@@ -7,10 +7,14 @@ import { Sun, Cloud, CloudRain } from "lucide-react";
 interface WeatherCardProps {
   data: WeatherData;
   isLoading?: boolean;
-  units?: 'metric' | 'imperial';
+  units?: "metric" | "imperial";
 }
 
-export const WeatherCard = ({ data, isLoading, units = 'metric' }: WeatherCardProps) => {
+export const WeatherCard = ({
+  data,
+  isLoading,
+  units = "metric",
+}: WeatherCardProps) => {
   if (isLoading) {
     return (
       <Card className="w-full max-w-md p-6 bg-transparent border-none">
@@ -28,14 +32,14 @@ export const WeatherCard = ({ data, isLoading, units = 'metric' }: WeatherCardPr
 
   const getWeatherIcon = (weatherMain: string) => {
     switch (weatherMain.toLowerCase()) {
-      case 'clear':
-        return <Sun className="w-16 h-16 text-white" />;
-      case 'clouds':
+      case "clear":
+        return <Sun className="w-16 h-16 text-yellow-400" />;
+      case "clouds":
         return <Cloud className="w-16 h-16 text-white" />;
-      case 'rain':
-        return <CloudRain className="w-16 h-16 text-white" />;
+      case "rain":
+        return <CloudRain className="w-16 h-16 text-gray-500" />;
       default:
-        return <Sun className="w-16 h-16 text-white" />;
+        return <Sun className="w-16 h-16 text-yellow-400" />;
     }
   };
 
@@ -43,14 +47,12 @@ export const WeatherCard = ({ data, isLoading, units = 'metric' }: WeatherCardPr
     <Card className="w-full max-w-md p-6 bg-transparent border-none text-white animate-fade-in">
       <div className="space-y-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-4xl font-light">
-            {data.name}
-          </h2>
+          <h2 className="text-4xl font-light">{data.name}</h2>
           <div className="text-right">
-            <p className="text-lg">{format(new Date(), 'HH:mm a')}</p>
+            <p className="text-lg">{format(new Date(), "HH:mm a")}</p>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-8">
           <div className="text-8xl font-light">
             {Math.round(data.main.temp)}°
@@ -58,11 +60,12 @@ export const WeatherCard = ({ data, isLoading, units = 'metric' }: WeatherCardPr
           <div className="flex flex-col items-start gap-2">
             {getWeatherIcon(data.weather[0].main)}
             <p className="text-lg">
-              {data.wind.speed} {units === 'metric' ? 'm/s' : 'mph'} / {Math.round(data.main.humidity)}%
+              {data.wind.speed} {units === "metric" ? "m/s" : "mph"} /{" "}
+              {Math.round(data.main.humidity)}%
             </p>
           </div>
         </div>
-        
+
         <div className="text-xl font-light">
           {format(new Date(), "EEEE do")}
         </div>

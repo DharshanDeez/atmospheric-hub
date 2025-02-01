@@ -1,7 +1,6 @@
 import { toast } from "sonner";
-
-const API_KEY = "1234567890"; // Replace with your OpenWeather API key
-const BASE_URL = "https://api.openweathermap.org/data/2.5";
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export interface WeatherData {
   name: string;
@@ -42,38 +41,42 @@ export interface ForecastData {
   }>;
 }
 
-export const fetchWeather = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<WeatherData> => {
+export const fetchWeather = async (
+  city: string,
+  units: "metric" | "imperial" = "metric"
+): Promise<WeatherData | null> => {
   try {
     const response = await fetch(
       `${BASE_URL}/weather?q=${city}&units=${units}&appid=${API_KEY}`
     );
-    
+
     if (!response.ok) {
-      throw new Error("City not found");
+      return null; // Return null instead of throwing an error
     }
-    
+
     const data = await response.json();
     return data;
   } catch (error) {
-    toast.error("Failed to fetch weather data");
-    throw error;
+    return null;
   }
 };
 
-export const fetchForecast = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<ForecastData> => {
+export const fetchForecast = async (
+  city: string,
+  units: "metric" | "imperial" = "metric"
+): Promise<ForecastData | null> => {
   try {
     const response = await fetch(
       `${BASE_URL}/forecast?q=${city}&units=${units}&appid=${API_KEY}`
     );
-    
+
     if (!response.ok) {
-      throw new Error("City not found");
+      return null; // Return null instead of throwing an error
     }
-    
+
     const data = await response.json();
     return data;
   } catch (error) {
-    toast.error("Failed to fetch forecast data");
-    throw error;
+    return null;
   }
 };
