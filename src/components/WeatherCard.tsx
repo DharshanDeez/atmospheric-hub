@@ -5,9 +5,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface WeatherCardProps {
   data: WeatherData;
   isLoading?: boolean;
+  units?: 'metric' | 'imperial';
 }
 
-export const WeatherCard = ({ data, isLoading }: WeatherCardProps) => {
+export const WeatherCard = ({ data, isLoading, units = 'metric' }: WeatherCardProps) => {
   if (isLoading) {
     return (
       <Card className="w-full max-w-md p-6 bg-white/10 backdrop-blur-lg border-white/20">
@@ -38,7 +39,7 @@ export const WeatherCard = ({ data, isLoading }: WeatherCardProps) => {
         </div>
         
         <div className="text-5xl font-bold">
-          {Math.round(data.main.temp)}°C
+          {Math.round(data.main.temp)}°{units === 'metric' ? 'C' : 'F'}
         </div>
         
         <div className="text-lg capitalize">
@@ -52,11 +53,11 @@ export const WeatherCard = ({ data, isLoading }: WeatherCardProps) => {
           </div>
           <div>
             <p className="text-white/60">Wind Speed</p>
-            <p className="font-semibold">{data.wind.speed} m/s</p>
+            <p className="font-semibold">{data.wind.speed} {units === 'metric' ? 'm/s' : 'mph'}</p>
           </div>
           <div>
             <p className="text-white/60">Feels Like</p>
-            <p className="font-semibold">{Math.round(data.main.feels_like)}°C</p>
+            <p className="font-semibold">{Math.round(data.main.feels_like)}°{units === 'metric' ? 'C' : 'F'}</p>
           </div>
         </div>
       </div>

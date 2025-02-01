@@ -1,16 +1,26 @@
 import { useState, useEffect } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { WeatherCard } from "@/components/WeatherCard";
-import { fetchWeather, WeatherData } from "@/services/weatherService";
+import { ForecastCard } from "@/components/ForecastCard";
+import { fetchWeather, fetchForecast, WeatherData, ForecastData } from "@/services/weatherService";
 import { useQuery } from "@tanstack/react-query";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const Index = () => {
   const [city, setCity] = useState(() => localStorage.getItem("lastCity") || "London");
+  const [units, setUnits] = useState<'metric' | 'imperial'>('metric');
 
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["weather", city],
-    queryFn: () => fetchWeather(city),
+  const { data: weatherData, isLoading: isLoadingWeather } = useQuery({
+    queryKey: ["weather", city, units],
+    queryFn: () => fetchWeather(city, units),
     refetchInterval: 30000, // Refetch every 30 seconds
+  });
+
+  const { data: forecastData, isLoading: isLoadingForecast } = useQuery({
+    queryKey: ["forecast", city, units],
+    queryFn: () => fetchForecast(city, units),
+    refetchInterval: 30000,
   });
 
   useEffect(() => {
@@ -35,10 +45,31 @@ const Index = () => {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br ${getBackgroundClass(data?.weather[0].main)}`}>
+    <div className={`min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br ${getBackgroundClass(weatherData?.weather[0].main)}`}>
       <div className="w-full max-w-md space-y-8">
-        <SearchBar onSearch={setCity} />
-        <WeatherCard data={data as WeatherData} isLoading={isLoading} />
+        <div className="flex items-center justify-between">
+          <SearchBar onSearch={setCity} />
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="units"
+              checked={units === 'imperial'}
+              onCheckedChange={(checked) => setUnits(checked ? 'imperial' : 'metric')}
+            />
+            <Label htmlFor="units" className="text-white">
+              {units === 'metric' ? '°C' : '°F'}
+            </Label>
+          </div>
+        </div>
+        <WeatherCard 
+          data={weatherData as WeatherData} 
+          isLoading={isLoadingWeather} 
+          units={units}
+        />
+        <ForecastCard 
+          data={forecastData as ForecastData} 
+          isLoading={isLoadingForecast}
+          units={units}
+        />
       </div>
     </div>
   );

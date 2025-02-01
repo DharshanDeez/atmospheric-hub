@@ -23,10 +23,29 @@ export interface WeatherData {
   };
 }
 
-export const fetchWeather = async (city: string): Promise<WeatherData> => {
+export interface ForecastData {
+  list: Array<{
+    dt: number;
+    main: {
+      temp: number;
+      humidity: number;
+    };
+    weather: Array<{
+      main: string;
+      description: string;
+      icon: string;
+    }>;
+    wind: {
+      speed: number;
+    };
+    dt_txt: string;
+  }>;
+}
+
+export const fetchWeather = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<WeatherData> => {
   try {
     const response = await fetch(
-      `${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`
+      `${BASE_URL}/weather?q=${city}&units=${units}&appid=${API_KEY}`
     );
     
     if (!response.ok) {
@@ -37,6 +56,24 @@ export const fetchWeather = async (city: string): Promise<WeatherData> => {
     return data;
   } catch (error) {
     toast.error("Failed to fetch weather data");
+    throw error;
+  }
+};
+
+export const fetchForecast = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<ForecastData> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/forecast?q=${city}&units=${units}&appid=${API_KEY}`
+    );
+    
+    if (!response.ok) {
+      throw new Error("City not found");
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    toast.error("Failed to fetch forecast data");
     throw error;
   }
 };
