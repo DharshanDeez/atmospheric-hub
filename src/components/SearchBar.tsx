@@ -24,10 +24,10 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
         type="text"
         value={city}
         onChange={(e) => setCity(e.target.value)}
-        placeholder="Enter city name..."
-        className="bg-white/20 border-white/30 placeholder:text-white/50 text-white"
+        placeholder="Search for a city..."
+        className="bg-white/10 border-none placeholder:text-white/50 text-white"
       />
-      <Button type="submit" variant="ghost" className="text-white hover:bg-white/20">
+      <Button type="submit" variant="ghost" className="text-white hover:bg-white/10">
         <Search className="h-4 w-4" />
       </Button>
     </form>

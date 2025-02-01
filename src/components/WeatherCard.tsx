@@ -1,6 +1,8 @@
 import { WeatherData } from "@/services/weatherService";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { format } from "date-fns";
+import { Sun, Cloud, CloudRain } from "lucide-react";
 
 interface WeatherCardProps {
   data: WeatherData;
@@ -11,7 +13,7 @@ interface WeatherCardProps {
 export const WeatherCard = ({ data, isLoading, units = 'metric' }: WeatherCardProps) => {
   if (isLoading) {
     return (
-      <Card className="w-full max-w-md p-6 bg-white/10 backdrop-blur-lg border-white/20">
+      <Card className="w-full max-w-md p-6 bg-transparent border-none">
         <div className="space-y-4">
           <Skeleton className="h-8 w-3/4 bg-white/20" />
           <Skeleton className="h-16 w-1/2 bg-white/20" />
@@ -24,41 +26,45 @@ export const WeatherCard = ({ data, isLoading, units = 'metric' }: WeatherCardPr
     );
   }
 
+  const getWeatherIcon = (weatherMain: string) => {
+    switch (weatherMain.toLowerCase()) {
+      case 'clear':
+        return <Sun className="w-16 h-16 text-white" />;
+      case 'clouds':
+        return <Cloud className="w-16 h-16 text-white" />;
+      case 'rain':
+        return <CloudRain className="w-16 h-16 text-white" />;
+      default:
+        return <Sun className="w-16 h-16 text-white" />;
+    }
+  };
+
   return (
-    <Card className="w-full max-w-md p-6 bg-white/10 backdrop-blur-lg border-white/20 text-white animate-fade-in">
-      <div className="space-y-4">
+    <Card className="w-full max-w-md p-6 bg-transparent border-none text-white animate-fade-in">
+      <div className="space-y-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">
-            {data.name}, {data.sys.country}
+          <h2 className="text-4xl font-light">
+            {data.name}
           </h2>
-          <img
-            src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-            alt={data.weather[0].description}
-            className="w-16 h-16"
-          />
+          <div className="text-right">
+            <p className="text-lg">{format(new Date(), 'HH:mm a')}</p>
+          </div>
         </div>
         
-        <div className="text-5xl font-bold">
-          {Math.round(data.main.temp)}°{units === 'metric' ? 'C' : 'F'}
+        <div className="flex items-center gap-8">
+          <div className="text-8xl font-light">
+            {Math.round(data.main.temp)}°
+          </div>
+          <div className="flex flex-col items-start gap-2">
+            {getWeatherIcon(data.weather[0].main)}
+            <p className="text-lg">
+              {data.wind.speed} {units === 'metric' ? 'm/s' : 'mph'} / {Math.round(data.main.humidity)}%
+            </p>
+          </div>
         </div>
         
-        <div className="text-lg capitalize">
-          {data.weather[0].description}
-        </div>
-        
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <p className="text-white/60">Humidity</p>
-            <p className="font-semibold">{data.main.humidity}%</p>
-          </div>
-          <div>
-            <p className="text-white/60">Wind Speed</p>
-            <p className="font-semibold">{data.wind.speed} {units === 'metric' ? 'm/s' : 'mph'}</p>
-          </div>
-          <div>
-            <p className="text-white/60">Feels Like</p>
-            <p className="font-semibold">{Math.round(data.main.feels_like)}°{units === 'metric' ? 'C' : 'F'}</p>
-          </div>
+        <div className="text-xl font-light">
+          {format(new Date(), "EEEE do")}
         </div>
       </div>
     </Card>

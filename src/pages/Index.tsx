@@ -14,7 +14,7 @@ const Index = () => {
   const { data: weatherData, isLoading: isLoadingWeather } = useQuery({
     queryKey: ["weather", city, units],
     queryFn: () => fetchWeather(city, units),
-    refetchInterval: 30000, // Refetch every 30 seconds
+    refetchInterval: 30000,
   });
 
   const { data: forecastData, isLoading: isLoadingForecast } = useQuery({
@@ -27,25 +27,25 @@ const Index = () => {
     localStorage.setItem("lastCity", city);
   }, [city]);
 
-  const getBackgroundClass = (weather?: string) => {
+  const getBackgroundGradient = (weather?: string) => {
     switch (weather?.toLowerCase()) {
       case "clear":
-        return "from-weather-clear to-blue-400";
+        return "from-blue-600 via-blue-400 to-blue-300";
       case "clouds":
-        return "from-weather-clouds to-gray-400";
+        return "from-gray-700 via-gray-500 to-gray-400";
       case "rain":
-        return "from-weather-rain to-gray-800";
+        return "from-gray-800 via-gray-600 to-gray-500";
       case "snow":
-        return "from-weather-snow to-gray-100";
+        return "from-gray-300 via-gray-200 to-gray-100";
       case "thunderstorm":
-        return "from-weather-thunder to-gray-900";
+        return "from-gray-900 via-gray-700 to-gray-600";
       default:
-        return "from-weather-clear to-blue-400";
+        return "from-blue-600 via-blue-400 to-blue-300";
     }
   };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br ${getBackgroundClass(weatherData?.weather[0].main)}`}>
+    <div className={`min-h-screen flex flex-col items-center justify-center p-8 bg-gradient-to-br ${getBackgroundGradient(weatherData?.weather[0].main)} transition-colors duration-500`}>
       <div className="w-full max-w-md space-y-8">
         <div className="flex items-center justify-between">
           <SearchBar onSearch={setCity} />
@@ -54,6 +54,7 @@ const Index = () => {
               id="units"
               checked={units === 'imperial'}
               onCheckedChange={(checked) => setUnits(checked ? 'imperial' : 'metric')}
+              className="bg-white/20 data-[state=checked]:bg-white/40"
             />
             <Label htmlFor="units" className="text-white">
               {units === 'metric' ? '°C' : '°F'}

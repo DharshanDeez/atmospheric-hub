@@ -2,6 +2,7 @@ import { ForecastData } from "@/services/weatherService";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { Sun, Cloud, CloudRain } from "lucide-react";
 
 interface ForecastCardProps {
   data: ForecastData;
@@ -12,11 +13,10 @@ interface ForecastCardProps {
 export const ForecastCard = ({ data, isLoading, units }: ForecastCardProps) => {
   if (isLoading) {
     return (
-      <Card className="w-full max-w-md p-6 bg-white/10 backdrop-blur-lg border-white/20">
+      <Card className="w-full max-w-md p-6 bg-transparent border-none">
         <div className="space-y-4">
-          <Skeleton className="h-8 w-3/4 bg-white/20" />
-          <div className="grid grid-cols-5 gap-4">
-            {[...Array(5)].map((_, i) => (
+          <div className="grid grid-cols-6 gap-4">
+            {[...Array(6)].map((_, i) => (
               <Skeleton key={i} className="h-24 bg-white/20" />
             ))}
           </div>
@@ -25,27 +25,35 @@ export const ForecastCard = ({ data, isLoading, units }: ForecastCardProps) => {
     );
   }
 
+  const getWeatherIcon = (weatherMain: string) => {
+    switch (weatherMain.toLowerCase()) {
+      case 'clear':
+        return <Sun className="w-8 h-8 text-white" />;
+      case 'clouds':
+        return <Cloud className="w-8 h-8 text-white" />;
+      case 'rain':
+        return <CloudRain className="w-8 h-8 text-white" />;
+      default:
+        return <Sun className="w-8 h-8 text-white" />;
+    }
+  };
+
   // Get one forecast per day (at noon)
   const dailyForecasts = data.list.filter(item => 
     item.dt_txt.includes("12:00:00")
-  ).slice(0, 5);
+  ).slice(0, 6);
 
   return (
-    <Card className="w-full max-w-md p-6 bg-white/10 backdrop-blur-lg border-white/20 text-white mt-4">
-      <h3 className="text-xl font-semibold mb-4">5-Day Forecast</h3>
-      <div className="grid grid-cols-5 gap-4">
+    <Card className="w-full max-w-md p-6 bg-transparent border-none text-white">
+      <div className="grid grid-cols-6 gap-8">
         {dailyForecasts.map((forecast) => (
-          <div key={forecast.dt} className="text-center">
-            <p className="text-sm font-medium">
+          <div key={forecast.dt} className="text-center space-y-2">
+            <p className="text-sm font-light">
               {format(new Date(forecast.dt_txt), 'EEE')}
             </p>
-            <img
-              src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`}
-              alt={forecast.weather[0].description}
-              className="w-12 h-12 mx-auto"
-            />
-            <p className="text-sm font-bold">
-              {Math.round(forecast.main.temp)}°{units === 'metric' ? 'C' : 'F'}
+            {getWeatherIcon(forecast.weather[0].main)}
+            <p className="text-lg font-light">
+              {Math.round(forecast.main.temp)}°
             </p>
           </div>
         ))}
